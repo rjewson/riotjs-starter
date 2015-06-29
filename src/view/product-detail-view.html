@@ -1,0 +1,24 @@
+<product-detail-view>
+  <h2>{_product.title}</h2>
+  <p>{_product.description}</p>
+  <p>{_product.favorite?'Stared':'Not stared'}</p>
+  <a if={ opts.data > 1 } href="#detail/{ opts.data - 1 }">Prev</a> |
+  <a if={ opts.data < _total } href="#detail/{ opts.data - -1 }">Next</a>
+
+
+  <script type="es6">
+    import stores from '../stores';
+
+    riot.control.on(riot.SE.PRODUCTS_CHANGED, posts => {
+      this.readData();
+    });
+
+    this.readData = () => {
+      this._product = stores.products.getProductById(opts.data);
+      this._total = stores.products._products.length;
+      this.update();
+    };
+
+    this.readData();
+  </script>
+</product-detail-view>

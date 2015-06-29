@@ -1,0 +1,16 @@
+<product-list-view>
+  <product each={_products} data={this}></product>
+
+  <script type="es6">
+    this._products = [];
+
+    this.on('mount', () => {
+      riot.control.trigger(riot.VE.LOAD_PRODUCTS);
+    });
+
+    riot.control.on(riot.SE.PRODUCTS_CHANGED, products => {
+      this._products = products;
+      this.update();
+    });
+  </script>
+</product-list-view>

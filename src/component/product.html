@@ -1,0 +1,20 @@
+<product>
+  <div>
+    <span>[{opts.data.productID}]</span>
+    <span><a href="#detail/{opts.data.productID}">{opts.data.title}</a></span>
+    <span>{opts.data.favorite?'*':''}</span>
+    <button onclick={rememberMe}>Remember</button>
+  </div>
+
+  <script type="es6">
+
+    this.on('mount', () => {
+      console.dir(opts.data);
+    });
+
+    this.rememberMe = () => {
+      riot.control.trigger(riot.VE.STAR_PRODUCT, opts.data.productID);
+    }
+    
+  </script>
+</product>

@@ -1,0 +1,32 @@
+webpackJsonp([1],[/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+function(t,e,n){(function(t){"use strict";n(/*! ./RiotControl.js */3),n(/*! ./events.js */4),n(/*! ./stores.js */2),n(/*! ./riotTags.js */5),t.mount("app")}).call(e,n(/*! riot */1))},,/*!***********************!*\
+  !*** ./src/stores.js ***!
+  \***********************/
+function(t,e,n){"use strict";function r(t){return t&&t.__esModule?t:{"default":t}}Object.defineProperty(e,"__esModule",{value:!0});var o=n(/*! ./store/product-store */6),i=r(o),a={products:i["default"]};e["default"]=a,t.exports=e["default"]},/*!****************************!*\
+  !*** ./src/RiotControl.js ***!
+  \****************************/
+function(t,e,n){(function(t){"use strict";var e=["on","one","off","trigger"],n={_stores:[],addStore:function(t){this._stores.push(t)}};e.forEach(function(t){n[t]=function(){var e=[].slice.call(arguments);this._stores.forEach(function(n){return n[t].apply(null,e)})}}),t.control=n}).call(e,n(/*! riot */1))},/*!***********************!*\
+  !*** ./src/events.js ***!
+  \***********************/
+function(t,e,n){(function(t){"use strict";t.SE={PRODUCTS_CHANGED:"se_products_changed"},t.VE={RESET_DATA:"ve_reset_data",STAR_PRODUCT:"ve_star_product",LOAD_PRODUCTS:"ve_load_products"}}).call(e,n(/*! riot */1))},/*!*************************!*\
+  !*** ./src/riotTags.js ***!
+  \*************************/
+function(t,e,n){"use strict";n(/*! ./component/product.html */10),n(/*! ./view/product-list-view.html */12),n(/*! ./view/product-detail-view.html */11),n(/*! ./app.html */9)},/*!************************************!*\
+  !*** ./src/store/product-store.js ***!
+  \************************************/
+function(t,e,n){(function(n){"use strict";function r(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}Object.defineProperty(e,"__esModule",{value:!0});var o=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),i="company-x-products",a=function(){function t(){r(this,t),n.observable(this);var e=window.localStorage.getItem(i);e?this._products=e&&JSON.parse(e)||[]:this.initData()}return o(t,[{key:"getProductById",value:function(t){return this._products.filter(function(e){return e.productID==t})[0]}},{key:"initData",value:function(){var t=[{productID:1,title:"Apples",description:"Green or red",favorite:!1},{productID:2,title:"Bannanas",description:"Almost extinct",favorite:!1},{productID:3,title:"Carrots",description:"Kids like them",favorite:!1},{productID:4,title:"Potatoes",description:"Best fried",favorite:!1},{productID:5,title:"Grapes",description:"Fruit sweets",favorite:!1},{productID:6,title:"Bees",description:"wtf are they here for",favorite:!1}];this._products=t,this.saveToStorage()}},{key:"saveToStorage",value:function(){window.localStorage.setItem(i,JSON.stringify(this._products))}}]),t}(),u=new a;u.on(n.VE.LOAD_PRODUCTS,function(){u.trigger(n.SE.PRODUCTS_CHANGED,u._products)}),u.on(n.VE.RESET_DATA,function(){u.initData(),u.trigger(n.SE.PRODUCTS_CHANGED,u._products)}),u.on(n.VE.STAR_PRODUCT,function(t){u._products.forEach(function(e){e.productID==t&&(e.favorite=!e.favorite)}),u.saveToStorage(),u.trigger(n.SE.PRODUCTS_CHANGED,u._products)}),n.control.addStore(u),e["default"]=u,t.exports=e["default"]}).call(e,n(/*! riot */1))},,,/*!**********************!*\
+  !*** ./src/app.html ***!
+  \**********************/
+function(t,e,n){(function(t){t.tag("app",'<section> <header> <h1>My Store</h1> <nav> <ul> <li><a href="#products">All Products</a></li> </ul> </nav> </header> <article> <div id="mainview"></div> </article> <footer> <nav> <a onclick="{resetData}">Reset Data</a> </nav> </footer> </section>',function(e){var n=this;this._currentView=null,this.resetData=function(){t.control.trigger(t.VE.RESET_DATA)},loadView=function(e,r){n._currentView&&n._currentView.unmount(!0),n._currentView=t.mountTo("div#mainview",e,{data:r})[0]},studyRoute=function(t,e){switch(t){case"detail":loadView("product-detail-view",e);break;case"products":loadView("product-list-view");break;default:loadView("product-list-view")}},t.route(studyRoute),this.on("mount",function(){t.route.exec(studyRoute)})})}).call(e,n(/*! riot */1))},/*!************************************!*\
+  !*** ./src/component/product.html ***!
+  \************************************/
+function(t,e,n){(function(t){t.tag("product","<div> <span>[{opts.data.productID}]</span> <span><a href=\"#detail/{opts.data.productID}\">{opts.data.title}</a></span> <span>{opts.data.favorite?'*':''}</span> <button onclick=\"{rememberMe}\">Remember</button> </div>",function(e){this.on("mount",function(){console.dir(e.data)}),this.rememberMe=function(){t.control.trigger(t.VE.STAR_PRODUCT,e.data.productID)}})}).call(e,n(/*! riot */1))},/*!*******************************************!*\
+  !*** ./src/view/product-detail-view.html ***!
+  \*******************************************/
+function(t,e,n){(function(t){t.tag("product-detail-view",'<h2>{_product.title}</h2> <p>{_product.description}</p> <p>{_product.favorite?\'Stared\':\'Not stared\'}</p> <a if="{ opts.data > 1 }" href="#detail/{ opts.data - 1 }">Prev</a> | <a if="{ opts.data < _total }" href="#detail/{ opts.data - -1 }">Next</a>',function(e){function r(t){return t&&t.__esModule?t:{"default":t}}var o=this,i=n(/*! ../stores */2),a=r(i);t.control.on(t.SE.PRODUCTS_CHANGED,function(t){o.readData()}),this.readData=function(){o._product=a["default"].products.getProductById(e.data),o._total=a["default"].products._products.length,o.update()},this.readData()})}).call(e,n(/*! riot */1))},/*!*****************************************!*\
+  !*** ./src/view/product-list-view.html ***!
+  \*****************************************/
+function(t,e,n){(function(t){t.tag("product-list-view",'<product each="{_products}" data="{this}"></product>',function(e){var n=this;this._products=[],this.on("mount",function(){t.control.trigger(t.VE.LOAD_PRODUCTS)}),t.control.on(t.SE.PRODUCTS_CHANGED,function(t){n._products=t,n.update()})})}).call(e,n(/*! riot */1))}]);
+//# sourceMappingURL=bundle.js.map
