@@ -44,12 +44,14 @@
         default:
           loadView('product-list-view');
       }
-    }
+    };
 
     riot.route(studyRoute);
 
     this.on('mount', () => {
       riot.route.exec(studyRoute);
-    })
+    });
+
   </script>
+
 </app>

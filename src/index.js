@@ -1,7 +1,6 @@
-import './RiotControl.js'
 import './events.js'
 import './stores.js'
-import './riotTags.js'
+import './allTags.js'
 
 //main entry points
 riot.mount('app');

@@ -5,6 +5,7 @@ class ProductStore {
   constructor() {
     //*extend* this class with riot.observable
     riot.observable(this)
+    debugger;
 
     //If you change the model, delete the localstoage object!
     let json = window.localStorage.getItem(LOCALSTORAGE_KEY)
@@ -14,6 +15,9 @@ class ProductStore {
     } else {
       this._products = (json && JSON.parse(json)) || []
     }
+
+    this.initListeners();
+
   }
 
   getProductById(id) {
@@ -33,6 +37,33 @@ class ProductStore {
     this.saveToStorage()
   }
 
+  initListeners() {
+
+    let eventMap = {
+      [riot.VE.LOAD_PRODUCTS] : () => {
+        this.trigger(riot.SE.PRODUCTS_CHANGED, this._products);
+      },
+      [riot.VE.RESET_DATA] : () => {
+        this.trigger(riot.SE.PRODUCTS_CHANGED, this._products);
+      },
+      [riot.VE.STAR_PRODUCT] : id => {
+        this._products.forEach(p => {
+          if (p.productID == id) {
+            p.favorite = !p.favorite;
+          };
+        });
+        this.saveToStorage();
+        this.trigger(riot.SE.PRODUCTS_CHANGED, this._products);
+      }
+    };
+
+    Object.keys(eventMap).forEach( key => {
+      let value = eventMap[key];
+      this.on(key,value);
+    });
+
+  }
+
   saveToStorage() {
     window.localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(this._products))
   }
@@ -41,27 +72,8 @@ class ProductStore {
 //Create it
 let theProductStore = new ProductStore();
 
-//setup event listerners
-theProductStore.on(riot.VE.LOAD_PRODUCTS, () => {
-  theProductStore.trigger(riot.SE.PRODUCTS_CHANGED, theProductStore._products);
-});
-
-theProductStore.on(riot.VE.RESET_DATA, () => {
-  theProductStore.initData();
-  theProductStore.trigger(riot.SE.PRODUCTS_CHANGED, theProductStore._products);
-});
-
-theProductStore.on(riot.VE.STAR_PRODUCT, id => {
-  theProductStore._products.forEach(p => {
-    if (p.productID == id) {
-      p.favorite = !p.favorite;
-    };
-  });
-  theProductStore.saveToStorage();
-  theProductStore.trigger(riot.SE.PRODUCTS_CHANGED, theProductStore._products);
-})
-
 // register to riot control by myself
 riot.control.addStore(theProductStore)
 
+//export it
 export default theProductStore
