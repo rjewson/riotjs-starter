@@ -5,7 +5,6 @@ class ProductStore {
   constructor() {
     //*extend* this class with riot.observable
     riot.observable(this)
-    debugger;
 
     //If you change the model, delete the localstoage object!
     let json = window.localStorage.getItem(LOCALSTORAGE_KEY)
