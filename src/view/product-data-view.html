@@ -1,0 +1,16 @@
+<product-data-view>
+  <div>{_product_data}</div>
+
+  <script type="es6">
+    import stores from '../stores';
+
+    riot.control.on(riot.XE.XE_DATA_CHANGED, data => {
+      console.dir(data);
+      this._product_data = data.data;
+      this.update();
+    });
+
+    stores.xhrstore.getDataByID(opts.data);
+
+  </script>
+</product-data-view>

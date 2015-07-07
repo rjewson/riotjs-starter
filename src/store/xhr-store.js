@@ -1,21 +1,36 @@
 import axios from 'axios'
 
-class XHRProductStore {
+class XHRStore {
 
   constructor() {
 
     riot.observable(this)
 
-    this.initListeners();
+    this._data = {};
+    
+  }
+
+  getDataByID(id) {
+
+    if (this._data[id]) {
+      this.trigger(riot.XE.XE_DATA_CHANGED, this._data[id]);
+      return;
+    }
+
+    let _id = id;
+
+    axios.get('/data/data'+_id+'.json')
+    .then( response => {
+      //Store it locally
+      this._data[_id] = response.data;
+      this.trigger(riot.XE.XE_DATA_CHANGED, this._data[_id]);
+    })
+    .catch( response => {
+      console.log("failed:"+_id);
+    });
 
   }
 
 }
 
-axios.get('/data/test.json')
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (response) {
-    console.log(response);
-  });
+export default XHRStore

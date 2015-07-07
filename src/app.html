@@ -13,7 +13,8 @@
     </article>
     <footer>
       <nav>
-        <a onclick={resetData}>Reset Data</a>
+        <a href='#' onclick={resetProducts}>Reset Products</a>
+        <a href='#add'>New Product</a>
       </nav>
     </footer>
   </section>
@@ -22,7 +23,7 @@
 
     this._currentView = null;
 
-    this.resetData = () => {
+    this.resetProducts = () => {
       riot.control.trigger(riot.VE.RESET_DATA);
     };
 
@@ -40,6 +41,12 @@
           break;
         case 'products':
           loadView('product-list-view');
+          break;
+        case 'add':
+          loadView('product-new-view');
+          break;
+        case 'data':
+          loadView('product-data-view',id);
           break;
         default:
           loadView('product-list-view');

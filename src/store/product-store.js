@@ -10,9 +10,9 @@ class ProductStore {
     let json = window.localStorage.getItem(LOCALSTORAGE_KEY)
 
     if (!json) {
-      this.initData()
+      this.initData();
     } else {
-      this._products = (json && JSON.parse(json)) || []
+      this._products = (json && JSON.parse(json)) || [];
     }
 
     this.initListeners();
@@ -20,7 +20,7 @@ class ProductStore {
   }
 
   getProductById(id) {
-    return this._products.filter(p => p.productID == id)[0]
+    return this._products.filter(p => p.productID == id)[0];
   }
 
   initData() {
@@ -32,8 +32,8 @@ class ProductStore {
       {productID:5, title:'Grapes', description:'Fruit sweets', favorite:false},
       {productID:6, title:'Bees', description:'wtf are they here for', favorite:false},
     ]
-    this._products = defaultProducts
-    this.saveToStorage()
+    this._products = defaultProducts;
+    this.saveToStorage();
   }
 
   initListeners() {
@@ -44,6 +44,14 @@ class ProductStore {
       },
       [riot.VE.RESET_DATA] : () => {
         this.trigger(riot.SE.PRODUCTS_CHANGED, this._products);
+      },
+      [riot.VE.ADD_DATA] : data => {
+
+        data.productID = this._products[this._products.length-1].productID+1;
+        data.favorite = false;
+        
+        this._products.push(data);
+        this.saveToStorage();
       },
       [riot.VE.STAR_PRODUCT] : id => {
         this._products.forEach(p => {
@@ -68,11 +76,5 @@ class ProductStore {
   }
 }
 
-//Create it
-let theProductStore = new ProductStore();
-
-// register to riot control by myself
-riot.control.addStore(theProductStore)
-
 //export it
-export default theProductStore
+export default ProductStore
